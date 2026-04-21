@@ -1,44 +1,40 @@
 -- Customers
 CREATE TABLE customers (
     customer_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100) ,
     phone VARCHAR(20),
     email VARCHAR(100),
-    license_number VARCHAR(50) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT now()
+    license_number VARCHAR(50) ,
 );
 
 -- Cars
 CREATE TABLE cars (
     car_id SERIAL PRIMARY KEY,
-    brand VARCHAR(50) NOT NULL,
-    model VARCHAR(50) NOT NULL,
-    year INT NOT NULL,
-    price_per_day DECIMAL(10,2) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'available' CHECK (status IN ('available','rented','maintenance')),
-    created_at TIMESTAMP DEFAULT now()
+    brand VARCHAR(50) ,
+    model VARCHAR(50) ,
+    year INT ,
+    price_per_day DECIMAL(10,2) ,
+    status VARCHAR(20)  'available' CHECK (status IN ('available','rented','maintenance')),
 );
 
 -- Rentals
 CREATE TABLE rentals (
     rental_id SERIAL PRIMARY KEY,
-    customer_id INT NOT NULL REFERENCES customers(customer_id) ON DELETE CASCADE,
-    car_id INT NOT NULL REFERENCES cars(car_id) ON DELETE RESTRICT,
-    rent_date DATE NOT NULL,
-    return_date DATE NOT NULL,
-    total_amount DECIMAL(10,2) NOT NULL,
+    customer_id INT ,
+    car_id INT ,
+    rent_date ,
+    return_date ,
+    total_amount DECIMAL(10,2) ,
     CHECK (return_date > rent_date),
-    created_at TIMESTAMP DEFAULT now()
 );
 
 -- Payments
 CREATE TABLE payments (
     payment_id SERIAL PRIMARY KEY,
-    rental_id INT NOT NULL REFERENCES rentals(rental_id) ON DELETE CASCADE,
-    payment_date DATE NOT NULL,
-    amount DECIMAL(10,2) NOT NULL,
-    payment_method VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP DEFAULT now()
+    rental_id INT,
+    payment_date DATE,
+    amount DECIMAL(10,2),
+    payment_method VARCHAR(50),
 );
 
 
