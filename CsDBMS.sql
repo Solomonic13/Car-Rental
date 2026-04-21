@@ -76,6 +76,10 @@ UPDATE cars
 SET status = 'rented'
 WHERE car_id IN (1, 3, 5, 4);
 
+UPDATE cars
+SET status = 'maintenance'
+WHERE car_id IN (5);
+
 SELECT * FROM cars;
 SELECT * FROM customers;
 SELECT * FROM rentals;
