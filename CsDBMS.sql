@@ -1,0 +1,100 @@
+-- Customers
+CREATE TABLE customers (
+    customer_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    license_number VARCHAR(50) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+-- Cars
+CREATE TABLE cars (
+    car_id SERIAL PRIMARY KEY,
+    brand VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    year INT NOT NULL,
+    price_per_day DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'available' CHECK (status IN ('available','rented','maintenance')),
+    created_at TIMESTAMP DEFAULT now()
+);
+
+-- Rentals
+CREATE TABLE rentals (
+    rental_id SERIAL PRIMARY KEY,
+    customer_id INT NOT NULL REFERENCES customers(customer_id) ON DELETE CASCADE,
+    car_id INT NOT NULL REFERENCES cars(car_id) ON DELETE RESTRICT,
+    rent_date DATE NOT NULL,
+    return_date DATE NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    CHECK (return_date > rent_date),
+    created_at TIMESTAMP DEFAULT now()
+);
+
+-- Payments
+CREATE TABLE payments (
+    payment_id SERIAL PRIMARY KEY,
+    rental_id INT NOT NULL REFERENCES rentals(rental_id) ON DELETE CASCADE,
+    payment_date DATE NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT now()
+);
+
+
+INSERT INTO customers (name, phone, email, license_number) VALUES
+('Solomon', '0911536612', 'soll@email.com', 'C12195'),
+('Tinsae', '0923456789', 'tina@email.com', 'B67890'),
+('Samuel', '0993451253', 'nardi@email.com', 'A59890'),
+('Kirubel', '0917456948', 'kuri@email.com', 'B65871');
+
+
+INSERT INTO cars (brand, model, year, price_per_day) VALUES
+('Toyota', 'VXR', 2025, 7000.00),
+('Suzuki', 'Dzier', 2023, 1900.00),
+('Volkswagen', 'ID6', 2024, 3200.00),
+('Ford', 'F150', 2022, 4000.00),
+('Hyundai', 'Elantra', 2019, 2000.00);
+
+
+-- Rental 1: customer 1 rents car 1 from 2026-04-01 to 2026-04-05 (4 days)
+-- Rental 2: customer 2 rents car 3 from 2026-03-10 to 2026-03-12 (2 days)
+-- Rental 3: customer 3 rents car 5 from 2026-02-01 to 2026-02-03 (2 days)
+-- Rental 4: customer 4 rents car 4 from 2026-04-10 to 2026-04-12 (2 days)
+
+INSERT INTO rentals (customer_id, car_id, rent_date, return_date, total_amount) VALUES
+(1, 1, '2026-04-01', '2026-04-05', 28000.00),
+(2, 3, '2026-03-10', '2026-03-12', 6400.00),
+(3, 5, '2026-02-01', '2026-02-03', 4000.00),
+(4, 4, '2026-04-10', '2026-04-12', 8000.00);
+
+
+INSERT INTO payments (rental_id, payment_date, amount, payment_method) VALUES
+(1, '2026-04-01', 28000.00, 'Cash'),
+(2, '2026-03-10', 6400.00, 'Credit Card'),
+(3, '2026-02-01', 4000.00, 'Mobile'),
+(4, '2026-04-10', 8000.00, 'Debit Card');
+
+
+UPDATE cars
+SET status = 'rented'
+WHERE car_id IN (1, 3, 5, 4);
+
+SELECT * FROM cars;
+SELECT * FROM customers;
+SELECT * FROM rentals;
+SELECT * FROM payments;
+
+SELECT r.rent_date FROM rentals r;
+
+SELECT
+    r.rental_id,
+    c.name,
+    ca.brand,
+    ca.model,
+    r.rent_date,
+    r.return_date,
+    r.total_amount
+FROM rentals r
+JOIN customers c ON r.customer_id = c.customer_id
+JOIN cars ca ON r.car_id = ca.car_id;
