@@ -95,6 +95,6 @@ SELECT
     r.rent_date,
     r.return_date,
     r.total_amount
-FROM rentals r
-JOIN customers c ON r.customer_id = c.customer_id
-JOIN cars ca ON r.car_id = ca.car_id;
+FROM rentals r, customers c, cars ca
+WHERE r.customer_id = c.customer_id
+AND r.car_id = ca.car_id;
