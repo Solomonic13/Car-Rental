@@ -4,7 +4,7 @@ CREATE TABLE customers (
     name VARCHAR(100),
     phone VARCHAR(20),
     email VARCHAR(100),
-    license_number VARCHAR(50),
+    license_number VARCHAR(50)
 );
 
 -- Cars
