@@ -14,7 +14,7 @@ CREATE TABLE cars (
     model VARCHAR(50) ,
     year INT ,
     price_per_day DECIMAL(10,2) ,
-    status VARCHAR(20) DEFAULT 'available' CHECK (status IN ('available','rented','maintenance')),
+    status VARCHAR(20) DEFAULT 'available' CHECK (status IN ('available','rented','maintenance'))
 );
 
 -- Rentals
@@ -25,7 +25,7 @@ CREATE TABLE rentals (
     rent_date DATE,
     return_date  DATE,
     total_amount DECIMAL(10,2) ,
-    CHECK (return_date > rent_date),
+    CHECK (return_date > rent_date)
 );
 
 -- Payments
@@ -34,7 +34,7 @@ CREATE TABLE payments (
     rental_id INT,
     payment_date DATE,
     amount NUMERIC(10,2),
-    payment_method VARCHAR(50),
+    payment_method VARCHAR(50)
 );
 
 
