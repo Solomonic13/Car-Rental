@@ -25,7 +25,18 @@ CREATE TABLE rentals (
     rent_date DATE,
     return_date  DATE,
     total_amount DECIMAL(10,2) ,
-    CHECK (return_date > rent_date)
+    CHECK (return_date > rent_date),
+
+   -- Foreign Keys
+    CONSTRAINT fk_customer
+        FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_car
+        FOREIGN KEY (car_id)
+        REFERENCES cars(car_id)
+        ON DELETE CASCADE 
 );
 
 -- Payments
@@ -34,7 +45,13 @@ CREATE TABLE payments (
     rental_id INT,
     payment_date DATE,
     amount NUMERIC(10,2),
-    payment_method VARCHAR(50)
+    payment_method VARCHAR(50),
+
+     -- Foreign Key
+    CONSTRAINT fk_rental
+        FOREIGN KEY (rental_id)
+        REFERENCES rentals(rental_id)
+        ON DELETE CASCADE
 );
 
 
