@@ -97,6 +97,12 @@ UPDATE cars
 SET status = 'maintenance'
 WHERE car_id IN (5);
 
+DELETE FROM customers
+WHERE  customer_id = 4;
+
+DELETE FROM cars
+WHERE  car_id = 2;
+
 SELECT * FROM cars;
 SELECT * FROM customers;
 SELECT * FROM rentals;
