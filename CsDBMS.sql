@@ -122,3 +122,5 @@ SELECT
 FROM rentals r, customers c, cars ca
 WHERE r.customer_id = c.customer_id
 AND r.car_id = ca.car_id;
+DROP table if exists customers CASCADE;
+DROP table if exists rentals CASCADE;
