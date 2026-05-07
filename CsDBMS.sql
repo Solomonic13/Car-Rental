@@ -89,6 +89,22 @@ INSERT INTO payments (rental_id, payment_date, amount, payment_method) VALUES
 (3, '2026-02-01', 4000.00, 'Mobile'),
 (4, '2026-04-10', 8000.00, 'Debit Card');
 
+BEGIN;
+
+-- Add rental
+INSERT INTO rentals (customer_id, car_id, rent_date, return_date, total_amount)
+VALUES (1, 2, '2026-05-06', '2026-05-10', 7600.00);
+
+-- Add payment
+INSERT INTO payments (rental_id, payment_date, amount, payment_method)
+VALUES (5, CURRENT_DATE, 7600.00, 'Cash');
+
+-- Update car status
+UPDATE cars
+SET status = 'rented'
+WHERE car_id = 2;
+
+COMMIT;
 
 UPDATE cars
 SET status = 'rented'
@@ -125,3 +141,4 @@ AND r.car_id = ca.car_id;
 DROP table if exists customers CASCADE;
 DROP table if exists rentals CASCADE;
 DROP table if exists payments CASCADE;
+DROP table if exists cars CASCADE;
